@@ -8,5 +8,6 @@ data class Expense(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val amount: Double,
-    val type: String
+    val category: String,
+    val date: Long = System.currentTimeMillis() // Store as timestamp
 )

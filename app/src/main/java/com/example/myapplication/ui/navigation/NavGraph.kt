@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.example.myapplication.ui.screens.AddExpenseScreen
 import com.example.myapplication.ui.screens.HomeScreen
 import com.example.myapplication.ui.viewmodel.ExpenseViewModel
+import com.example.myapplication.ui.viewmodel.ExpenseViewModelInterface // Import the interface
 
 @Composable
 fun NavGraph(navController: NavHostController, viewModel: ExpenseViewModel) {
@@ -15,10 +16,10 @@ fun NavGraph(navController: NavHostController, viewModel: ExpenseViewModel) {
         startDestination = "home"
     ) {
         composable("home") {
-            HomeScreen(navController, viewModel)
+            HomeScreen(navController, viewModel) // Assuming HomeScreen still uses ExpenseViewModel
         }
         composable("add_expense") {
-            AddExpenseScreen(navController, viewModel) // 🔥 Fixed navController passing
+            AddExpenseScreen(navController = navController, viewModel = viewModel) // Pass the viewModel
         }
     }
 }
