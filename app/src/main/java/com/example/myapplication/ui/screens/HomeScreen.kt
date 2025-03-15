@@ -18,8 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.myapplication.R
 import com.example.myapplication.ui.viewmodel.ExpenseViewModel
@@ -39,7 +42,7 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .paint(
-                painter = painterResource(id = R.drawable.tmp),
+                painter = painterResource(id = R.drawable.bg),
                 contentScale = ContentScale.Crop
             )
     ) {
@@ -62,13 +65,13 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModel) {
                         .padding(16.dp)
                 ) {
                     // App Logo
-                    Image(
+                   /*Image(
                         painter = painterResource(id = R.drawable.logo),
                         contentDescription = "Logo",
                         modifier = Modifier
                             .size(100.dp)
                             .align(Alignment.CenterHorizontally)
-                    )
+                    )*/
 
                     // Weekly Summary
                     Row(
@@ -78,8 +81,8 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModel) {
                     ) {
                         Text(
                             "Weekly Total: ${formatCurrency(weeklyTotal ?: 0.0)}",
-                            style = Typography.headlineMedium,
-                            color = Color.White
+                            style = Typography.headlineLarge,
+                            color = Color.Black
                         )
                         Button(onClick = {
                             Toast.makeText(context, "Weekly Summary", Toast.LENGTH_SHORT).show()
@@ -91,10 +94,10 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModel) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     // To Buy List
-                    Text("To Buy", style = Typography.titleLarge, color = Color.White)
+                    Text("To Buy", style = Typography.titleLarge, color = Color.Black)
                     LazyColumn(modifier = Modifier.height(100.dp)) {
                         items(toBuyItems) { item ->
-                            Text(item, style = Typography.bodyMedium, color = Color.White)
+                            Text(item, style = Typography.bodyMedium, color = Color.Black)
                         }
                     }
 
@@ -166,7 +169,11 @@ fun HomeScreenPreview(expenses: List<Expense>, weeklyTotal: Double) {
             items(expenses) { expense ->
                 Card(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(expense.name, style = Typography.titleMedium)
+                        Text(expense.name, style = TextStyle(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black)
+                        )
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text("${formatCurrency(expense.amount)} - ", style = Typography.bodyMedium)
                             CategoryText(category = expense.category)

@@ -64,12 +64,8 @@ dependencies {
     implementation(libs.androidx.room.ktx) // ADD THIS for Coroutine support
     implementation(libs.material3)
     implementation(libs.androidx.navigation.compose) //
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
     implementation(libs.ui.graphics)
     implementation(libs.ui)
-    implementation(libs.androidx.ui.v154) // Or the latest version
     implementation(libs.androidx.material3.v112) // Or the latest version
     implementation(libs.androidx.material)
     implementation(libs.androidx.lifecycle.viewmodel.compose)

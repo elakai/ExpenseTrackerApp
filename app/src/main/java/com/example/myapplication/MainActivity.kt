@@ -8,13 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.ui.screens.HomeScreen
+import androidx.compose.ui.platform.LocalContext
+import com.example.myapplication.ui.navigation.NavGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.viewmodel.ExpenseViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.myapplication.ui.viewmodel.ExpenseViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,15 +24,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
-                    val viewModel: ExpenseViewModel = viewModel() // Create ViewModel
+                    val context = LocalContext.current // Get the context
+                    val viewModel: ExpenseViewModel = viewModel(factory = ExpenseViewModelFactory(context)) // Use the factory
 
-                    NavHost(navController = navController, startDestination = "home") {
-                        composable("home") {
-                            HomeScreen(navController = navController, viewModel = viewModel)
-                        }
-                        // Add other composables/routes here
-                    }
+                    NavGraph(viewModel = viewModel)
                 }
             }
         }

@@ -1,7 +1,5 @@
 package com.example.myapplication.ui.screens
 
-//import java.time.LocalDate // If using Java 8+ time API
-//import java.time.format.DateTimeFormatter // If using Java 8+ time API
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -21,12 +19,16 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +43,7 @@ import com.example.myapplication.ui.theme.Typography
 import com.example.myapplication.ui.viewmodel.ExpenseViewModelInterface
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 
 @Composable
 fun AddExpenseScreen(navController: NavController, viewModel: ExpenseViewModelInterface) {
@@ -51,118 +54,127 @@ fun AddExpenseScreen(navController: NavController, viewModel: ExpenseViewModelIn
     val categories = listOf("Food", "School", "Transportation", "Personal", "Other")
     var buttonScale by remember { mutableFloatStateOf(1f) }
     var date by remember { mutableStateOf("") } // Date input field
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "Add Expense",
-            style = Typography.headlineLarge,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .wrapContentWidth(Alignment.CenterHorizontally)
-        )
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .height(2.dp)
-                .background(Color(0xFF00008B))
-        )
-
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { paddingValues ->
         Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxSize().padding(paddingValues),
+            verticalArrangement = Arrangement.Center
         ) {
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text("Expense Name", style = Typography.bodyLarge) },
-                modifier = Modifier.fillMaxWidth(),
-                textStyle = Typography.bodyLarge
+            Text(
+                text = "Add Expense",
+                style = Typography.headlineLarge,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .wrapContentWidth(Alignment.CenterHorizontally)
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = amount,
-                onValueChange = { amount = it },
-                label = { Text("Amount", style = Typography.bodyLarge) },
-                modifier = Modifier.fillMaxWidth(),
-                textStyle = Typography.bodyLarge
-            )
-            Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedTextField( // Add Date Input
-                value = date,
-                onValueChange = { date = it },
-                label = { Text("Date (MM/DD/YYYY)", style = Typography.bodyLarge) },
-                modifier = Modifier.fillMaxWidth(),
-                textStyle = Typography.bodyLarge
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .height(2.dp)
+                    .background(Color(0xFF00008B))
             )
-            Spacer(modifier = Modifier.height(8.dp))
 
             Column(
-                modifier = Modifier.fillMaxWidth().clickable { expanded = true },
+                modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 OutlinedTextField(
-                    readOnly = true,
-                    value = category,
-                    onValueChange = { },
-                    label = { Text("Category", style = Typography.bodyLarge) },
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Expense Name", style = Typography.bodyLarge) },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = false,
-                    colors = OutlinedTextFieldDefaults.colors(
-                        disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                        disabledBorderColor = MaterialTheme.colorScheme.outline,
-                        disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        focusedBorderColor = MaterialTheme.colorScheme.outline,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        focusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    ),
                     textStyle = Typography.bodyLarge
                 )
-                DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = amount,
+                    onValueChange = { amount = it },
+                    label = { Text("Amount", style = Typography.bodyLarge) },
+                    modifier = Modifier.fillMaxWidth(),
+                    textStyle = Typography.bodyLarge
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedTextField( // Add Date Input
+                    value = date,
+                    onValueChange = { date = it },
+                    label = { Text("Date (MM/DD/YYYY)", style = Typography.bodyLarge) },
+                    modifier = Modifier.fillMaxWidth(),
+                    textStyle = Typography.bodyLarge
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Column(
+                    modifier = Modifier.fillMaxWidth().clickable { expanded = true },
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    categories.forEach { selectionOption ->
-                        DropdownMenuItem(
-                            text = { Text(selectionOption, style = Typography.bodyLarge) },
-                            onClick = {
-                                category = selectionOption
-                                expanded = false
-                            }
-                        )
+                    OutlinedTextField(
+                        readOnly = true,
+                        value = category,
+                        onValueChange = { },
+                        label = { Text("Category", style = Typography.bodyLarge) },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = false,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                            disabledBorderColor = MaterialTheme.colorScheme.outline,
+                            disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            focusedBorderColor = MaterialTheme.colorScheme.outline,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            focusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        ),
+                        textStyle = Typography.bodyLarge
+                    )
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        categories.forEach { selectionOption ->
+                            DropdownMenuItem(
+                                text = { Text(selectionOption, style = Typography.bodyLarge) },
+                                onClick = {
+                                    category = selectionOption
+                                    expanded = false
+                                }
+                            )
+                        }
                     }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                val animatedScale: Float by animateFloatAsState(
-                    targetValue = buttonScale,
-                    animationSpec = tween(durationMillis = 100)
-                )
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    val animatedScale: Float by animateFloatAsState(
+                        targetValue = buttonScale,
+                        animationSpec = tween(durationMillis = 100)
+                    )
 
-                Button(
-                    onClick = {
-                        buttonScale = 0.9f
-                        viewModel.addExpense(name, amount.toDoubleOrNull() ?: 0.0, category)
-                        navController.popBackStack()
-                        buttonScale = 1f
-                    },
-                    modifier = Modifier.scale(animatedScale)
-                ) {
-                    Text("Add Expense", style = Typography.bodyLarge)
+                    Button(
+                        onClick = {
+                            buttonScale = 0.9f
+                            viewModel.addExpense(name, amount.toDoubleOrNull() ?: 0.0, category)
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Expense Added Successfully!")
+                            }
+                            navController.popBackStack()
+                            buttonScale = 1f
+                        },
+                        modifier = Modifier.scale(animatedScale)
+                    ) {
+                        Text("Add Expense", style = Typography.bodyLarge)
+                    }
                 }
             }
         }
