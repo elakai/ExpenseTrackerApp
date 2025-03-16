@@ -5,9 +5,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "expenses")
 data class Expense(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0, // Changed to Long
     val name: String,
     val amount: Double,
     val category: String,
-    val date: Long = System.currentTimeMillis() // Store as timestamp
+    val date: Long = System.currentTimeMillis(),
+    val notes: String = ""
 )

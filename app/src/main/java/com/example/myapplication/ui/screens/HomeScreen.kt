@@ -1,8 +1,6 @@
 package com.example.myapplication.ui.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,14 +27,19 @@ import com.example.myapplication.ui.viewmodel.ExpenseViewModel
 import com.example.myapplication.data.Expense
 import java.text.NumberFormat
 import java.util.Locale
+import com.example.myapplication.ui.navigation.Screen
 import com.example.myapplication.ui.theme.Typography
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.myapplication.ui.viewmodel.ExpenseViewModelInterface
 
 @Composable
-fun HomeScreen(navController: NavController, viewModel: ExpenseViewModel) {
-    val expenses by viewModel.expenses.collectAsState(initial = emptyList())
-    val weeklyTotal by viewModel.weeklyTotal.collectAsState(initial = 0.0)
+fun HomeScreen(navController: NavController, viewModel: ExpenseViewModelInterface) {
+    val expenses by viewModel.expenses.collectAsStateWithLifecycle()
+    val weeklyTotal by viewModel.weeklyTotal.collectAsStateWithLifecycle()
+    val toBuyItems by viewModel.toBuyItems.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    var toBuyItems by remember { mutableStateOf(listOf("Milk", "Bread", "Eggs")) }
+
+    var expanded by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -46,15 +49,35 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModel) {
                 contentScale = ContentScale.Crop
             )
     ) {
-        // Content on top of background
         Column(modifier = Modifier.fillMaxSize()) {
             Scaffold(
                 floatingActionButton = {
-                    FloatingActionButton(onClick = { navController.navigate("add_expense") }) {
-                        Icon(Icons.Filled.Add, contentDescription = "Add Expense")
+                    Box {
+                        FloatingActionButton(onClick = { expanded = true }) {
+                            Icon(Icons.Filled.Add, contentDescription = "Add")
+                        }
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Add Expense", style = Typography.bodyLarge) },
+                                onClick = {
+                                    navController.navigate(Screen.AddExpense.route)
+                                    expanded = false
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Add To Buy Item", style = Typography.bodyLarge) },
+                                onClick = {
+                                    navController.navigate(Screen.ToBuy.route)
+                                    expanded = false
+                                }
+                            )
+                        }
                     }
                 },
-                containerColor = Color.Transparent, // Ensure transparency for background
+                containerColor = Color.Transparent,
                 contentColor = Color.White,
                 modifier = Modifier.fillMaxSize()
             ) { paddingValues ->
@@ -64,46 +87,57 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModel) {
                         .padding(paddingValues)
                         .padding(16.dp)
                 ) {
-                    // App Logo
-                   /*Image(
-                        painter = painterResource(id = R.drawable.logo),
-                        contentDescription = "Logo",
+                    Card(
                         modifier = Modifier
-                            .size(100.dp)
-                            .align(Alignment.CenterHorizontally)
-                    )*/
-
-                    // Weekly Summary
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                            .fillMaxWidth()
+                            .clickable { navController.navigate(Screen.ExpenseList.route) }
+                            .padding(8.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFDD5DF)) // Pastel Pink
                     ) {
                         Text(
                             "Weekly Total: ${formatCurrency(weeklyTotal ?: 0.0)}",
                             style = Typography.headlineLarge,
-                            color = Color.Black
+                            color = Color.Black,
+                            modifier = Modifier.padding(16.dp)
                         )
-                        Button(onClick = {
-                            Toast.makeText(context, "Weekly Summary", Toast.LENGTH_SHORT).show()
-                        }) {
-                            Text("Summary", style = Typography.bodyLarge)
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // "To Buy" Section in a Notepad-Style Card
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFEF6E6)) // Cream White
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .padding(16.dp)
+                        ) {
+                            Text(
+                                "To Buy",
+                                style = Typography.titleLarge,
+                                color = Color.Black
+                            )
+                            LazyColumn(Modifier.height(100.dp)) {
+                                items(toBuyItems) { item ->
+                                    Text(
+                                        item,
+                                        style = Typography.bodyMedium,
+                                        color = Color.Black
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(onClick = { navController.navigate(Screen.ToBuy.route) }) {
+                                Text("Manage To Buy List", style = Typography.bodyLarge)
+                            }
                         }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // To Buy List
-                    Text("To Buy", style = Typography.titleLarge, color = Color.Black)
-                    LazyColumn(modifier = Modifier.height(100.dp)) {
-                        items(toBuyItems) { item ->
-                            Text(item, style = Typography.bodyMedium, color = Color.Black)
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    // Expense List
                     LazyColumn {
                         items(expenses) { expense ->
                             Card(
@@ -113,8 +147,13 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModel) {
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {
                                     Text(expense.name, style = Typography.titleMedium)
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Text("${formatCurrency(expense.amount)} - ", style = Typography.bodyMedium)
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            "${formatCurrency(expense.amount)} - ",
+                                            style = Typography.bodyMedium
+                                        )
                                         CategoryText(category = expense.category)
                                     }
                                 }
@@ -133,7 +172,8 @@ fun CategoryText(category: String) {
     Text(
         text = category,
         modifier = Modifier.clickable {
-            Toast.makeText(context, "Category: $category", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Category: $category", Toast.LENGTH_SHORT)
+                .show()
         },
         style = Typography.bodyMedium
     )
@@ -154,28 +194,41 @@ fun PreviewHomeScreen() {
         Expense(name = "Entertainment", amount = 75.0, category = "Movies")
     )
     val mockWeeklyTotal = mockExpenses.sumOf { it.amount }
-    HomeScreenPreview(
-        expenses = mockExpenses,
-        weeklyTotal = mockWeeklyTotal
-    )
+    HomeScreenPreview(expenses = mockExpenses, weeklyTotal = mockWeeklyTotal)
 }
 
 @Composable
 fun HomeScreenPreview(expenses: List<Expense>, weeklyTotal: Double) {
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text("Weekly Total: ${formatCurrency(weeklyTotal)}", style = Typography.headlineMedium)
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFFDD5DF)) // Pastel Pink
+        ) {
+            Text(
+                "Weekly Total: ${formatCurrency(weeklyTotal)}",
+                style = Typography.headlineMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn {
             items(expenses) { expense ->
                 Card(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(expense.name, style = TextStyle(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black)
+                        Text(
+                            expense.name, style = TextStyle(
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black
+                            )
                         )
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("${formatCurrency(expense.amount)} - ", style = Typography.bodyMedium)
+                            Text(
+                                "${formatCurrency(expense.amount)} - ",
+                                style = Typography.bodyMedium
+                            )
                             CategoryText(category = expense.category)
                         }
                     }

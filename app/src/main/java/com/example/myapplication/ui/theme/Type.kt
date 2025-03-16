@@ -12,6 +12,10 @@ val FreshSeasonFamily = FontFamily(
     Font(R.font.fresh_season, FontWeight.Normal)
 )
 
+val LemonTuesdayFamily = FontFamily(
+    Font(R.font.lemon_tuesday, FontWeight.Normal)
+)
+
 val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = FreshSeasonFamily,
@@ -19,17 +23,15 @@ val Typography = Typography(
         fontSize = 16.sp
     ),
     headlineMedium = TextStyle(
-        fontFamily = FreshSeasonFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 20.sp
+        fontFamily = LemonTuesdayFamily, // Using Lemon Tuesday for headlines
+        fontWeight = FontWeight.SemiBold, // Or FontWeight.Normal
+        fontSize = 28.sp
     ),
-
     headlineLarge = TextStyle(
-        fontFamily = FreshSeasonFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 35.sp
+        fontFamily = LemonTuesdayFamily, // Using Lemon Tuesday for headlines
+        fontWeight = FontWeight.SemiBold, // Or FontWeight.Normal
+        fontSize = 38.sp
     ),
-
     titleMedium = TextStyle(
         fontFamily = FreshSeasonFamily,
         fontWeight = FontWeight.Normal,

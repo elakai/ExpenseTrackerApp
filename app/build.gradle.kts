@@ -40,6 +40,7 @@ android {
     }
 }
 
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -50,6 +51,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -58,7 +60,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation (libs.androidx.room.runtime)
-    implementation (libs.androidx.lifecycle.runtime.ktx.v262)
     ksp (libs.androidx.room.compiler)
     implementation(libs.androidx.room.runtime.v261) // Make sure you have this
     implementation(libs.androidx.room.ktx) // ADD THIS for Coroutine support
@@ -69,5 +70,6 @@ dependencies {
     implementation(libs.androidx.material3.v112) // Or the latest version
     implementation(libs.androidx.material)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-
+    implementation("com.github.PhilJay:MPAndroidChart:3.1.0")
+    implementation(libs.androidx.lifecycle.runtime.compose)
 }
