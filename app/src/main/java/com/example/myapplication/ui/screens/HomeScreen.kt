@@ -5,12 +5,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -53,7 +55,10 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModelInterfac
             Scaffold(
                 floatingActionButton = {
                     Box {
-                        FloatingActionButton(onClick = { expanded = true }) {
+                        FloatingActionButton(
+                            onClick = { expanded = true },
+                            shape = CircleShape
+                        ) {
                             Icon(Icons.Filled.Add, contentDescription = "Add")
                         }
                         DropdownMenu(
@@ -77,6 +82,7 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModelInterfac
                         }
                     }
                 },
+                floatingActionButtonPosition = FabPosition.Center,
                 containerColor = Color.Transparent,
                 contentColor = Color.White,
                 modifier = Modifier.fillMaxSize()
@@ -104,12 +110,12 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModelInterfac
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // "To Buy" Section in a Notepad-Style Card
+
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFEF6E6)) // Cream White
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFEF6E6))
                     ) {
                         Column(
                             modifier = Modifier
@@ -117,8 +123,8 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModelInterfac
                         ) {
                             Text(
                                 "To Buy",
-                                style = Typography.titleLarge,
-                                color = Color.Black
+                                style = Typography.headlineSmall,
+                                color = Color(0xFF68645c)
                             )
                             LazyColumn(Modifier.height(100.dp)) {
                                 items(toBuyItems) { item ->
@@ -130,8 +136,11 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModelInterfac
                                 }
                             }
                             Spacer(modifier = Modifier.height(8.dp))
-                            Button(onClick = { navController.navigate(Screen.ToBuy.route) }) {
-                                Text("Manage To Buy List", style = Typography.bodyLarge)
+                            Button(
+                                onClick = { navController.navigate(Screen.ToBuy.route) },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFead6f9)) // Change button color
+                            ){
+                                Text("Manage List", style = Typography.bodyLarge, color = Color.Black)
                             }
                         }
                     }
@@ -144,6 +153,7 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModelInterfac
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(8.dp)
+                                    .alpha(0.8f)
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {
                                     Text(expense.name, style = Typography.titleMedium)
@@ -175,7 +185,7 @@ fun CategoryText(category: String) {
             Toast.makeText(context, "Category: $category", Toast.LENGTH_SHORT)
                 .show()
         },
-        style = Typography.bodyMedium
+        style = Typography.bodyLarge
     )
 }
 

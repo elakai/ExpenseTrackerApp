@@ -23,6 +23,11 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import java.net.URLDecoder
 import java.net.URLEncoder
+import androidx.compose.ui.text.TextStyle
+import com.example.myapplication.ui.theme.Typography
+import androidx.compose.ui.unit.sp
+import androidx.core.content.res.ResourcesCompat
+import com.example.myapplication.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +38,12 @@ fun ChartScreen(navController: NavController, viewModel: ExpenseViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Monthly Expenses Chart") },
+                title = {
+                    Text(
+                        "Monthly Expenses Chart",
+                        style = Typography.headlineMedium
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -54,6 +64,9 @@ fun ChartScreen(navController: NavController, viewModel: ExpenseViewModel) {
 
 @Composable
 fun ChartContent(monthlyExpenses: List<Expense>, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val freshSeasonTypeface = ResourcesCompat.getFont(context, R.font.fresh_season)
+
     AndroidView(
         factory = { context ->
             PieChart(context).apply {
@@ -90,13 +103,25 @@ fun ChartContent(monthlyExpenses: List<Expense>, modifier: Modifier = Modifier) 
                 PieEntry(percentage, category)
             }
 
-            val dataSet = PieDataSet(entries, "Monthly Expenses by Category")
-            dataSet.colors = ColorTemplate.COLORFUL_COLORS.toList() // Potential issue here.
+            val dataSet = PieDataSet(entries, "")
+            dataSet.colors = ColorTemplate.COLORFUL_COLORS.toList()
             dataSet.valueTextColor = android.graphics.Color.BLACK
             dataSet.sliceSpace = 3f
 
+
+            dataSet.valueTextSize = 25f;
+
             val data = PieData(dataSet)
             pieChart.data = data
+
+            pieChart.setEntryLabelTextSize(15f)
+            pieChart.legend.textSize = 20f
+
+            if (freshSeasonTypeface != null) {
+                pieChart.setEntryLabelTypeface(freshSeasonTypeface)
+                pieChart.legend.typeface = freshSeasonTypeface
+            }
+
             pieChart.invalidate()
         },
         modifier = modifier.fillMaxSize()

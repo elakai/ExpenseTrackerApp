@@ -1,6 +1,7 @@
 package com.example.myapplication.data
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
@@ -21,4 +22,7 @@ interface ExpenseDao {
 
     @Query("SELECT * FROM expenses WHERE date >= :startDate AND date <= :endDate ORDER BY date DESC")
     fun getExpensesBetween(startDate: Long, endDate: Long): Flow<List<Expense>>
+
+    @Delete
+    suspend fun deleteExpense(expense: Expense)
 }

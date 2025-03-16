@@ -3,6 +3,8 @@ package com.example.myapplication.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -85,8 +87,8 @@ fun ExpenseListScreen(navController: NavController, viewModel: ExpenseViewModel)
             }
 
             LazyColumn(modifier = Modifier.weight(1f)) {
-                items(expensesToDisplay) { expense ->
-                    ExpenseItem(expense = expense)
+                items(expensesToDisplay, key = { it.id }) { expense -> //Added key
+                    ExpenseItem(expense = expense, onDelete = { viewModel.deleteExpense(expense) }) // Added onDelete
                 }
             }
 
@@ -106,7 +108,7 @@ fun ExpenseListScreen(navController: NavController, viewModel: ExpenseViewModel)
                     onClick = { navController.navigate(Screen.AddExpense.route) },
                     modifier = Modifier.weight(1f).padding(horizontal = 4.dp)
                 ) {
-                    Text("Add Expense", style = Typography.bodyLarge)
+                    Text("Manage List", style = Typography.bodyLarge) // Changed to Manage List
                 }
             }
         }
@@ -114,7 +116,7 @@ fun ExpenseListScreen(navController: NavController, viewModel: ExpenseViewModel)
 }
 
 @Composable
-fun ExpenseItem(expense: Expense) {
+fun ExpenseItem(expense: Expense, onDelete: () -> Unit) { // Added onDelete
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -134,9 +136,13 @@ fun ExpenseItem(expense: Expense) {
                 Text(text = dateFormat.format(expense.date), style = Typography.bodyMedium, color = Color.Gray)
             }
             Text(text = "$${expense.amount}", style = Typography.bodyLarge)
+            IconButton(onClick = onDelete) { // Added delete button
+                Icon(Icons.Filled.Delete, contentDescription = "Delete")
+            }
         }
     }
 }
+
 
 fun getMonthString(date: Long): String {
     val calendar = Calendar.getInstance()
