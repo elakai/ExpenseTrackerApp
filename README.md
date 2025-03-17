@@ -1,12 +1,12 @@
 <p align="center">
-  <a href="https://example.com/">
-    <img src="https://via.placeholder.com/72" alt="Logo" width=72 height=72>
+  <a href="https://gitlab.com/pmagnifico/midterm-project/-/blob/master/app/src/main/res/drawable/ic_launcher.png?ref_type=heads">
+    <img src="https://gitlab.com/pmagnifico/midterm-project/-/blob/master/app/src/main/res/drawable/ic_launcher.png?ref_type=heads" alt="Logo" width=72 height=72>
   </a>
 
   <h3 align="center">Logo</h3>
 
   <p align="center">
-    Short description
+    "Cat Got Your Wallet?" is an Android-based mobile application developed to facilitate effective personal expense management. The application provides users with a streamlined interface for recording and categorizing financial transactions, enabling comprehensive tracking of expenses. Utilizing data visualization techniques, specifically pie charts, the application presents users with a clear and concise representation of their spending patterns.
     <br>
     <a href="https://reponame/issues/new?template=bug.md">Report bug</a>
     ·
@@ -39,12 +39,62 @@ Directory structure
 
 ```text
 src/
-└── ui/
-    ├── uiTheme.kt
-    └── Colors.kt
-└── res/
-    ├── strings.xml
-    └── README.md
+└── main/
+    ├── java/
+    │   └── com/
+    │       └── example/
+    │           └── myapplication/
+    │               ├── data/
+    │               │   ├── AppDatabase.kt
+    │               │   ├── Expense.kt
+    │               │   └── ExpenseDao.kt
+    │               ├── ui/
+    │               │   ├── components/
+    │               │   │   └── ChartView.kt
+    │               │   ├── navigation/
+    │               │   │   └── NavGraph.kt
+    │               │   ├── screens/
+    │               │   │   ├── AddExpenseScreen.kt
+    │               │   │   ├── ChartScreen.kt
+    │               │   │   ├── ExpenseListScreen.kt
+    │               │   │   ├── HomeScreen.kt
+    │               │   │   └── ToBuyScreen.kt
+    │               │   ├── theme/
+    │               │   │   ├── Color.kt
+    │               │   │   ├── Theme.kt
+    │               │   │   └── Type.kt
+    │               │   └── viewmodel/
+    │               │       ├── ExpenseViewModel.kt
+    │               │       ├── ExpenseViewModelFactory.kt
+    │               │       ├── ExpenseViewModelInterface.kt
+    │               │       ├── MockViewModels.kt
+    │               │       └── PreviewExpenseViewModel.kt
+    │               ├── MainActivity.kt
+    └── res/
+        ├── drawable/
+        │   ├── bg.png
+        │   ├── bg1.png
+        │   ├── bg2.png
+        │   ├── bg3.png
+        │   ├── bg4.png
+        │   ├── bg5.png
+        │   ├── bg6.png
+        │   ├── button.png
+        │   ├── ic_launcher.png
+        │   ├── ic_launcher_background.xml
+        │   ├── ic_launcher_foreground.xml
+        │   └── tmp.png
+        ├── font/
+        │   ├── fresh_season.otf
+        │   └── lemon_tuesday.otf
+        ├── values/
+        │   ├── strings.xml
+        │   └── themes.xml
+        ├── layout/
+        │   └── activity_main.xml
+        ├── navigation/
+            └── nav_graph.xml
+        
 ```
 
 ## Bugs and feature requests
@@ -62,9 +112,9 @@ Editor preferences are available in the [editor config](https://reponame/blob/ma
 ## Creators
 
 
-**Elmer**
+**Pam**
 
-- <https://gitlab.com/eclaveria>
+- <https://gitlab.com/pmagnifico>
 
 ## Thanks
 
