@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://gitlab.com/pmagnifico/midterm-project/-/raw/master/app/src/main/res/drawable/ic_launcher.png">
-    <img src="https://gitlab.com/pmagnifico/midterm-project/-/raw/master/app/src/main/res/drawable/ic_launcher.png" alt="Logo" width=72 height=72>
+    <img src="https://gitlab.com/pmagnifico/midterm-project/-/raw/master/app/src/main/res/drawable/ic_launcher.png" alt="Logo" width=90 height=90>
   </a>
 
 
