@@ -1,7 +1,8 @@
 <p align="center">
-  <a href="https://gitlab.com/pmagnifico/midterm-project/-/blob/master/app/src/main/res/drawable/ic_launcher.png?ref_type=heads">
-    <img src="https://gitlab.com/pmagnifico/midterm-project/-/blob/master/app/src/main/res/drawable/ic_launcher.png?ref_type=heads" alt="Logo" width=72 height=72>
+  <a href="https://gitlab.com/pmagnifico/midterm-project/-/raw/master/app/src/main/res/drawable/ic_launcher.png">
+    <img src="https://gitlab.com/pmagnifico/midterm-project/-/raw/master/app/src/main/res/drawable/ic_launcher.png" alt="Logo" width=72 height=72>
   </a>
+
 
   <h3 align="center">Logo</h3>
 
