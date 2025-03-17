@@ -47,7 +47,7 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModelInterfac
         modifier = Modifier
             .fillMaxSize()
             .paint(
-                painter = painterResource(id = R.drawable.bg),
+                painter = painterResource(id = R.drawable.bg1),
                 contentScale = ContentScale.Crop
             )
     ) {
@@ -98,7 +98,7 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModelInterfac
                             .fillMaxWidth()
                             .clickable { navController.navigate(Screen.ExpenseList.route) }
                             .padding(8.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFDD5DF)) // Pastel Pink
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFfae7ff ))
                     ) {
                         Text(
                             "Weekly Total: ${formatCurrency(weeklyTotal ?: 0.0)}",
@@ -130,7 +130,7 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModelInterfac
                                 items(toBuyItems) { item ->
                                     Text(
                                         item,
-                                        style = Typography.bodyMedium,
+                                        style = Typography.titleMedium,
                                         color = Color.Black
                                     )
                                 }
@@ -214,7 +214,7 @@ fun HomeScreenPreview(expenses: List<Expense>, weeklyTotal: Double) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFFDD5DF)) // Pastel Pink
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFFAE7FF))
         ) {
             Text(
                 "Weekly Total: ${formatCurrency(weeklyTotal)}",

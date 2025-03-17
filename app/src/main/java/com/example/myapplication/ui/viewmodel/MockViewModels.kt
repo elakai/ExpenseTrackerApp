@@ -80,15 +80,14 @@ class MockExpenseViewModel : ExpenseViewModelInterface {
                     "October" -> 9
                     "November" -> 10
                     "December" -> 11
-                    else -> -1 // Invalid month
+                    else -> -1
                 }
 
                 if (targetMonth != -1) {
-                    // Create a new Calendar instance, don't use system current time.
                     val targetCalendar = Calendar.getInstance().apply {
                         set(Calendar.YEAR, targetYear)
                         set(Calendar.MONTH, targetMonth)
-                        set(Calendar.DAY_OF_MONTH, 1) // Set day to 1, to ensure month comparison.
+                        set(Calendar.DAY_OF_MONTH, 1)
                         set(Calendar.HOUR_OF_DAY, 0)
                         set(Calendar.MINUTE, 0)
                         set(Calendar.SECOND, 0)
@@ -97,7 +96,7 @@ class MockExpenseViewModel : ExpenseViewModelInterface {
 
                     val expenseCalendar = Calendar.getInstance().apply {
                         timeInMillis = expense.date
-                        set(Calendar.DAY_OF_MONTH, 1) // Set day to 1, to ensure month comparison.
+                        set(Calendar.DAY_OF_MONTH, 1)
                         set(Calendar.HOUR_OF_DAY, 0)
                         set(Calendar.MINUTE, 0)
                         set(Calendar.SECOND, 0)
@@ -106,10 +105,10 @@ class MockExpenseViewModel : ExpenseViewModelInterface {
 
                     return@filter expenseCalendar.timeInMillis == targetCalendar.timeInMillis
                 } else {
-                    return@filter false // Invalid month
+                    return@filter false
                 }
             } else {
-                return@filter false // Invalid month format
+                return@filter false
             }
         }
         return flowOf(expenses)

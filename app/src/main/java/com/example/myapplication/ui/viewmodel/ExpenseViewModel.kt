@@ -70,7 +70,7 @@ class ExpenseViewModel(context: Context) : ViewModel(), ExpenseViewModelInterfac
         }
     }
 
-    fun deleteExpense(expense: Expense) { // Added deleteExpense function
+    fun deleteExpense(expense: Expense) {
         viewModelScope.launch {
             expenseDao.deleteExpense(expense)
         }
@@ -110,7 +110,7 @@ class ExpenseViewModel(context: Context) : ViewModel(), ExpenseViewModelInterfac
                     weeklyData = weeklyData.sortedBy { it.week }
                 )
             }.sortedByDescending {
-                val date = SimpleDateFormat("MMMM पुरालेखित", Locale.getDefault()).parse(it.month)
+                val date = SimpleDateFormat("MMMM yyyy", Locale.getDefault()).parse(it.month)
                 date?.time ?: 0
             }
     }
@@ -124,7 +124,7 @@ class ExpenseViewModel(context: Context) : ViewModel(), ExpenseViewModelInterfac
     private fun getMonthString(date: Long): String {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = date
-        val format = SimpleDateFormat("MMMM पुरालेखित", Locale.getDefault())
+        val format = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
         return format.format(calendar.time)
     }
 

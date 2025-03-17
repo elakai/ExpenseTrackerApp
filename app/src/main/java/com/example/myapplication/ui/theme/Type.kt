@@ -23,23 +23,23 @@ val Typography = Typography(
         fontSize = 16.sp
     ),
     headlineMedium = TextStyle(
-        fontFamily = FreshSeasonFamily, // Using Lemon Tuesday for headlines
-        fontWeight = FontWeight.SemiBold, // Or FontWeight.Normal
+        fontFamily = FreshSeasonFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 28.sp
     ),
     headlineSmall = TextStyle(
-        fontFamily = LemonTuesdayFamily, // Using Lemon Tuesday for headlines
-        fontWeight = FontWeight.SemiBold, // Or FontWeight.Normal
+        fontFamily = LemonTuesdayFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 28.sp
     ),
     headlineLarge = TextStyle(
-        fontFamily = FreshSeasonFamily, // Using Lemon Tuesday for headlines
-        fontWeight = FontWeight.Normal, // Or FontWeight.Normal
+        fontFamily = FreshSeasonFamily,
+        fontWeight = FontWeight.Normal,
         fontSize = 35.sp
     ),
     titleLarge = TextStyle(
-        fontFamily = LemonTuesdayFamily, // Using Lemon Tuesday for headlines
-        fontWeight = FontWeight.SemiBold, // Or FontWeight.Normal
+        fontFamily = LemonTuesdayFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 38.sp
     ),
     titleMedium = TextStyle(

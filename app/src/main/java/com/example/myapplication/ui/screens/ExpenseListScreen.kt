@@ -9,12 +9,17 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.R
 import com.example.myapplication.data.Expense
 import com.example.myapplication.ui.navigation.Screen
 import com.example.myapplication.ui.theme.Typography
@@ -37,78 +42,90 @@ fun ExpenseListScreen(navController: NavController, viewModel: ExpenseViewModel)
         processExpenses(allExpenses)
     }
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .paint(
+                painter = painterResource(id = R.drawable.bg4),
+                contentScale = ContentScale.Crop
+            )
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = Color.Transparent
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
             ) {
-                Text(
-                    "Expenses",
-                    style = Typography.headlineMedium,
-                    modifier = Modifier.padding(bottom = 8.dp).weight(1f)
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        "Expenses",
+                        style = Typography.headlineMedium,
+                        modifier = Modifier.padding(bottom = 8.dp).weight(1f),
+                        color = Color.Black
+                    )
 
-                Box {
-                    Button(onClick = { expandedDropdown = true }) {
-                        Text(selectedMonth, style = Typography.bodyLarge)
-                    }
-                    DropdownMenu(
-                        expanded = expandedDropdown,
-                        onDismissRequest = { expandedDropdown = false }
-                    ) {
-                        val distinctMonths = monthlyExpenses.map { it.month }.distinct()
-                        distinctMonths.forEach { month ->
-                            DropdownMenuItem(
-                                text = { Text(month, style = Typography.bodyLarge) },
-                                onClick = {
-                                    selectedMonth = month
-                                    expandedDropdown = false
-                                }
-                            )
+                    Box {
+                        Button(
+                            onClick = { expandedDropdown = true },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFfee5ff))
+                        ) {
+                            Text(selectedMonth, style = Typography.bodyLarge, color = Color.Black)
+                        }
+                        DropdownMenu(
+                            expanded = expandedDropdown,
+                            onDismissRequest = { expandedDropdown = false }
+                        ) {
+                            val distinctMonths = monthlyExpenses.map { it.month }.distinct()
+                            distinctMonths.forEach { month ->
+                                DropdownMenuItem(
+                                    text = { Text(month, style = Typography.bodyLarge, color = Color.Black) },
+                                    onClick = {
+                                        selectedMonth = month
+                                        expandedDropdown = false
+                                    }
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-            val expensesToDisplay = if (selectedMonth == getMonthString(System.currentTimeMillis())) {
-                val currentWeek = getWeekOfMonth(System.currentTimeMillis())
-                val currentMonthData = monthlyExpenses.find { it.month == selectedMonth }
-                currentMonthData?.weeklyData?.find { it.week == currentWeek }?.expenses ?: emptyList()
-            } else {
-                monthlyExpenses.find { it.month == selectedMonth }?.weeklyData?.flatMap { it.expenses } ?: emptyList()
-            }
-
-            LazyColumn(modifier = Modifier.weight(1f)) {
-                items(expensesToDisplay, key = { it.id }) { expense -> //Added key
-                    ExpenseItem(expense = expense, onDelete = { viewModel.deleteExpense(expense) }) // Added onDelete
+                val expensesToDisplay = if (selectedMonth == getMonthString(System.currentTimeMillis())) {
+                    val currentWeek = getWeekOfMonth(System.currentTimeMillis())
+                    val currentMonthData = monthlyExpenses.find { it.month == selectedMonth }
+                    currentMonthData?.weeklyData?.find { it.week == currentWeek }?.expenses ?: emptyList()
+                } else {
+                    monthlyExpenses.find { it.month == selectedMonth }?.weeklyData?.flatMap { it.expenses } ?: emptyList()
                 }
-            }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Button(onClick = {
-                    val encodedMonth = URLEncoder.encode(selectedMonth, "UTF-8")
-                    navController.navigate("chart/${encodedMonth}") // Corrected Navigation
-                }) {
-                    Text("View Chart", style = Typography.bodyLarge)
+                LazyColumn(modifier = Modifier.weight(1f)) {
+                    items(expensesToDisplay, key = { it.id }) { expense ->
+                        ExpenseItem(expense = expense, onDelete = { viewModel.deleteExpense(expense) })
+                    }
                 }
-                Button(
-                    onClick = { navController.navigate(Screen.AddExpense.route) },
-                    modifier = Modifier.weight(1f).padding(horizontal = 4.dp)
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Manage List", style = Typography.bodyLarge) // Changed to Manage List
+                    Button(
+                        onClick = {
+                            val encodedMonth = URLEncoder.encode(selectedMonth, "UTF-8")
+                            navController.navigate("chart/${encodedMonth}")
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFfee5ff)),
+                        modifier = Modifier.padding(horizontal = 4.dp)
+                    ) {
+                        Text("View Chart", style = Typography.bodyLarge.copy(fontSize = 18.sp), color = Color.Black)
+                    }
                 }
             }
         }
@@ -116,12 +133,13 @@ fun ExpenseListScreen(navController: NavController, viewModel: ExpenseViewModel)
 }
 
 @Composable
-fun ExpenseItem(expense: Expense, onDelete: () -> Unit) { // Added onDelete
+fun ExpenseItem(expense: Expense, onDelete: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.7f))
     ) {
         Row(
             modifier = Modifier
@@ -130,19 +148,18 @@ fun ExpenseItem(expense: Expense, onDelete: () -> Unit) { // Added onDelete
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = expense.name, style = Typography.bodyLarge)
+                Text(text = expense.name, style = Typography.bodyLarge, color = Color.Black)
                 Spacer(modifier = Modifier.height(4.dp))
                 val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
                 Text(text = dateFormat.format(expense.date), style = Typography.bodyMedium, color = Color.Gray)
             }
-            Text(text = "$${expense.amount}", style = Typography.bodyLarge)
-            IconButton(onClick = onDelete) { // Added delete button
-                Icon(Icons.Filled.Delete, contentDescription = "Delete")
+            Text(text = "$${expense.amount}", style = Typography.bodyLarge, color = Color.Black)
+            IconButton(onClick = onDelete) {
+                Icon(Icons.Filled.Delete, contentDescription = "Delete", tint = Color.Black)
             }
         }
     }
 }
-
 
 fun getMonthString(date: Long): String {
     val calendar = Calendar.getInstance()

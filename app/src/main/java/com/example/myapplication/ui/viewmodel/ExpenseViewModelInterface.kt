@@ -12,5 +12,5 @@ interface ExpenseViewModelInterface {
     fun addExpense(name: String, amount: Double, category: String, notes: String, dateString: String)
     fun addToBuyItem(item: String)
     fun removeToBuyItem(index: Int)
-    fun getExpensesForMonth(month: String): Flow<List<Expense>> // MUST BE HERE
+    fun getExpensesForMonth(month: String): Flow<List<Expense>>
 }
