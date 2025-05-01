@@ -39,63 +39,138 @@ instructions
 Directory structure
 
 ```text
-src/
-└── main/
-    ├── java/
-    │   └── com/
-    │       └── example/
-    │           └── myapplication/
-    │               ├── data/
-    │               │   ├── AppDatabase.kt
-    │               │   ├── Expense.kt
-    │               │   └── ExpenseDao.kt
-    │               ├── ui/
-    │               │   ├── components/
-    │               │   │   └── ChartView.kt
-    │               │   ├── navigation/
-    │               │   │   └── NavGraph.kt
-    │               │   ├── screens/
-    │               │   │   ├── AddExpenseScreen.kt
-    │               │   │   ├── ChartScreen.kt
-    │               │   │   ├── ExpenseListScreen.kt
-    │               │   │   ├── HomeScreen.kt
-    │               │   │   └── ToBuyScreen.kt
-    │               │   ├── theme/
-    │               │   │   ├── Color.kt
-    │               │   │   ├── Theme.kt
-    │               │   │   └── Type.kt
-    │               │   └── viewmodel/
-    │               │       ├── ExpenseViewModel.kt
-    │               │       ├── ExpenseViewModelFactory.kt
-    │               │       ├── ExpenseViewModelInterface.kt
-    │               │       ├── MockViewModels.kt
-    │               │       └── PreviewExpenseViewModel.kt
-    │               ├── MainActivity.kt
-    └── res/
-        ├── drawable/
-        │   ├── bg.png
-        │   ├── bg1.png
-        │   ├── bg2.png
-        │   ├── bg3.png
-        │   ├── bg4.png
-        │   ├── bg5.png
-        │   ├── bg6.png
-        │   ├── button.png
-        │   ├── ic_launcher.png
-        │   ├── ic_launcher_background.xml
-        │   ├── ic_launcher_foreground.xml
-        │   └── tmp.png
-        ├── font/
-        │   ├── fresh_season.otf
-        │   └── lemon_tuesday.otf
-        ├── values/
-        │   ├── strings.xml
-        │   └── themes.xml
-        ├── layout/
-        │   └── activity_main.xml
-        ├── navigation/
-            └── nav_graph.xml
-        
+├───app
+│   │   .gitignore
+│   │   build.gradle.kts
+│   │   proguard-rules.pro
+│   │
+│   └───src
+│       ├───androidTest
+│       │   └───java
+│       │       └───com
+│       │           └───example
+│       │               └───myapplication
+│       │                       ExampleInstrumentedTest.kt
+│       │
+│       ├───main
+│       │   │   AndroidManifest.xml
+│       │   │   button-playstore.png
+│       │   │
+│       │   ├───java
+│       │   │   └───com
+│       │   │       └───example
+│       │   │           └───myapplication
+│       │   │               │   MainActivity.kt
+│       │   │               │
+│       │   │               ├───data
+│       │   │               │       AppDatabase.kt
+│       │   │               │       Expense.kt
+│       │   │               │       ExpenseDao.kt
+│       │   │               │
+│       │   │               └───ui
+│       │   │                   ├───components
+│       │   │                   │       ChartView.kt
+│       │   │                   │
+│       │   │                   ├───navigation
+│       │   │                   │       NavGraph.kt
+│       │   │                   │
+│       │   │                   ├───screens
+│       │   │                   │       AddExpenseScreen.kt
+│       │   │                   │       ChartScreen.kt
+│       │   │                   │       ExpenseListScreen.kt
+│       │   │                   │       HomeScreen.kt
+│       │   │                   │       ToBuyScreen.kt
+│       │   │                   │
+│       │   │                   ├───theme
+│       │   │                   │       Color.kt
+│       │   │                   │       Theme.kt
+│       │   │                   │       Type.kt
+│       │   │                   │
+│       │   │                   └───viewmodel
+│       │   │                           ExpenseViewModel.kt
+│       │   │                           ExpenseViewModelFactory.kt
+│       │   │                           ExpenseViewModelInterface.kt
+│       │   │                           MockViewModels.kt
+│       │   │                           PreviewExpenseViewModel.kt
+│       │   │
+│       │   └───res
+│       │       ├───drawable
+│       │       │       bg.png
+│       │       │       bg1.png
+│       │       │       bg2.png
+│       │       │       bg3.png
+│       │       │       bg4.png
+│       │       │       bg5.png
+│       │       │       bg6.png
+│       │       │       button.png
+│       │       │       ic_launcher.png
+│       │       │       ic_launcher_background.xml
+│       │       │       ic_launcher_foreground.xml
+│       │       │       tmp.png
+│       │       │
+│       │       ├───font
+│       │       │       fresh_season.otf
+│       │       │       lemon_tuesday.otf
+│       │       │
+│       │       ├───layout
+│       │       │       activity_main.xml
+│       │       │
+│       │       ├───mipmap-anydpi-v26
+│       │       │       button.xml
+│       │       │       button_round.xml
+│       │       │
+│       │       ├───mipmap-hdpi
+│       │       │       button.webp
+│       │       │       button_round.webp
+│       │       │       ic_launcher_foreground.webp
+│       │       │
+│       │       ├───mipmap-mdpi
+│       │       │       button.webp
+│       │       │       button_round.webp
+│       │       │       ic_launcher_foreground.webp
+│       │       │
+│       │       ├───mipmap-xhdpi
+│       │       │       button.webp
+│       │       │       button_round.webp
+│       │       │       ic_launcher_foreground.webp
+│       │       │
+│       │       ├───mipmap-xxhdpi
+│       │       │       button.webp
+│       │       │       button_round.webp
+│       │       │       ic_launcher_foreground.webp
+│       │       │
+│       │       ├───mipmap-xxxhdpi
+│       │       │       button.webp
+│       │       │       button_round.webp
+│       │       │       ic_launcher_foreground.webp
+│       │       │
+│       │       ├───values
+│       │       │       colors.xml
+│       │       │       ic_launcher_background.xml
+│       │       │       strings.xml
+│       │       │       themes.xml
+│       │       │
+│       │       └───xml
+│       │               backup_rules.xml
+│       │               data_extraction_rules.xml
+│       │
+│       └───test
+│           └───java
+│               └───com
+│                   └───example
+│                       └───myapplication
+│                               ExampleUnitTest.kt
+│
+├───gradle
+│   │   libs.versions.toml
+│   │
+│   └───wrapper
+│           gradle-wrapper.jar
+│           gradle-wrapper.properties
+│
+└───public
+        index.html
+        style.css
 ```
 
 ## Bugs and feature requests
